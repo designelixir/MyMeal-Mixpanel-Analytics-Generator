@@ -5,13 +5,16 @@
     border: 1px solid teal;
     padding: 10px;
   }
+  .unfinished-shadow {box-shadow: inset 0 0 5px red; border: 1px solid red;}
+  .results {margin: 0px 50px 0px 0px;}
   .file-div {
     
     padding: 10px;
     margin: 10px;
-    border: 1px solid black;
+    
   }
-  .csv-results { margin: 0 25px; border: 2px solid teal; max-height: 100px; overflow-y: scroll; white-space:pre-wrap;}
+  input {max-width: 250px; overflow: scroll;}
+  .csv-results { max-height: 100px;  overflow-y: scroll; border: 1px solid black; white-space:pre-wrap;}
   .restaurant-container {border: 1px solid red; margin: 10px; padding: 5px; max-height: 100px; overflow-y: scroll;}
   .input-label {
     display: block;
@@ -44,11 +47,15 @@
 #report-generator {overflow-x: scroll;}
   .pdf {border: 3px solid lime; padding: 15px; margin: 10px; min-width: 816px; width: 816px; }
 .pdf-header {border: 1px solid blue; margin-bottom: 50px; }
-.logo {height: 50px; width: auto; border: 1px solid magenta;}
+.logo-container img {height: 50px; width: auto;}
   .flex-center-spacebetween {display: flex; align-items: center; justify-content: space-between;}
   .header-date {color: gray; font-style: italic;}
 
   .bolded-result {font-size: 24px; font-weight: 400; }
 .page-views {border: 1px solid pink;}
   .summary-results-container {border: 1px solid red;}
-  .views-chart {max-width: 600px; max-height: 100px; border: 1px solid lime;}
+  .views-chart {max-width: 650px; max-height: 125px; border: 1px solid lime;}
+  .logo-container {text-align: right;}
+  .logo-container p { font-weight: 700; font-size: 18px; }
+
+.retention-chart {max-height: 300px; max-width: 400px; border: 1px solid lime;}

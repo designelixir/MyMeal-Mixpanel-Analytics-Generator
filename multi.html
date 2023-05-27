@@ -11,55 +11,60 @@
   <h1>Mixpanel Report Generator</h1>
 
   <!-- Page Visits -->
-  <div class="file-div">
+  <div class="file-div unfinished-shadow" id="page-visit-container">
     <div class="flex-start-start">
-      <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+      <div style="margin-right: 50px;">
           <h3>1. Upload Page Visits Report</h3>
+          <input type="file" id="file1" accept=".csv"><br><br>
+          <button onclick="handleFile('file1', 'file1-results')">Import Page Visits CSV</button>
+      </div>
+      <div class="results">
+          <h3>CSV Import Results</h3>
+          <div id="file1-results" class="csv-results"></div>
+      </div>
+      <div>
+        <h3>Page Visits Summary</h3>
+        <div id="file1-pivot-results" class="csv-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Retention -->
+  <div class="file-div unfinished-shadow" id="user-retention-container" style="display: none;">
+    <div class="flex-start-start">
+      <div style="margin-right: 50px;">
+          <h3>2. Upload Session Time Report</h3>
           <input type="file" id="file2" accept=".csv"><br><br>
-          <button onclick="handleFile('file2', 'file2-results')">Import Page Visits CSV</button>
+          <button onclick="handleFile('file2', 'file2-results')">Import Session Time CSV</button>
       </div>
       <div>
           <h3>CSV Import Results</h3>
           <div id="file2-results" class="csv-results"></div>
       </div>
-      <div>
-        <h3>Table</h3>
-        <div id="file2-pivot-results" class="csv-results"></div>
-      </div>
     </div>
   </div>
 
-
-  <div class="container">
-    <div class="file-div">
-      <div class="flex-start-start">
-        <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
-            <h3>Upload Session Time Report</h3>
-            <input type="file" id="file1" accept=".csv"><br><br>
-            <button onclick="handleFile('file1', 'file1-results')">Import Session Time CSV</button>
-        </div>
-        <div>
-            <h3>CSV Import Results</h3>
-            <div id="file1-results" class="csv-results"></div>
-        </div>
-      </div>
+  <div class="file-div unfinished-shadow" id="session-time-container" style="display: none;">
+    
+        <h3>3. Upload Session Time Report</h3>
+        <div style="margin-right: 50px;" class="flex-start-start">
+        <input type="file" id="file3" accept=".csv"><br><br>
+        <button onclick="handleFile('file3', 'file3-results')">Import Session Time CSV</button>
     </div>
+    <div>
+        <h3>CSV Import Results</h3>
+        <div id="file3-results" class="csv-results"></div>
+    </div>
+  </div>
+
+  <div class="container" style="display: none;">
+    
 
     
 
       <!-- Allergen Preferences -->
       <div class="file-div">
-        <div class="flex-start-start">
-          <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
-              <h3>Upload Allergen Preferences Report</h3>
-              <input type="file" id="file3" accept=".csv"><br><br>
-              <button onclick="handleFile('file3', 'file3-results')">Import Allergen Preferences CSV</button>
-          </div>
-          <div>
-              <h3>CSV Import Results</h3>
-              <div id="file3-results" class="csv-results"></div>
-          </div>
-        </div>
+        
       </div>
 
       <div class="file-div">

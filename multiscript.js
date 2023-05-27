@@ -19,20 +19,7 @@ function parseCSVFile(file, targetDiv) {
     
     
     if (targetDiv === "file1-results"){
-    const parsedData = dataRows.map(row => {
-        const values = row.split(',');
-        // get the number of sessions that lasted x time 
-        const date = values[0];
-        const session = values[2]
-        const restaurant = values[3]
-        const sessionCount = Number(values[4])
-        return { date, session, restaurant, sessionCount };
-        });
-        const resultDiv = document.getElementById(targetDiv);
-        resultDiv.textContent = JSON.stringify(parsedData, null, 2);
-    
-    } else if (targetDiv === "file2-results"){
-    const parsedData = dataRows.map(row => {
+       const parsedDataUnclean = dataRows.filter( Boolean ).map(row => {
         const values = row.split(',');
 
         // get the number of sessions that lasted x time 
@@ -42,6 +29,7 @@ function parseCSVFile(file, targetDiv) {
         return { date, restaurantName, pageViews };
         
         });
+        const parsedData = removeNullValues(parsedDataUnclean);
         const resultDiv = document.getElementById(targetDiv);
         resultDiv.textContent = JSON.stringify(parsedData, null, 2);
 
@@ -53,7 +41,35 @@ function parseCSVFile(file, targetDiv) {
         createRestaurantData(parsedData);
         
 
-
+   
+    
+    } else if (targetDiv === "file2-results"){
+        const parsedRetentionDataUnclean = dataRows.map(row => {
+        const values = row.split(',');
+        
+        if (values[0] === "$overall" || values[0] === "" || values[0] === "undefined"){
+          console.log("skipped blank value")
+        } else {
+          const restaurant = values[0]
+          const viewAllergyMenu = Number(values[1]);
+          const seeMenuButton = Number(values[2]);
+          const menuCardClicked = Number(values[3]);
+          const orderOnlineClicked = Number(values[4])
+          createUserRetentionStructure(restaurant)
+          
+          return {restaurant, viewAllergyMenu, seeMenuButton, menuCardClicked, orderOnlineClicked};
+        }
+       
+       
+        
+        });
+        
+        console.log(parsedRetentionDataUnclean)
+        const parsedRetentionData = removeNullValues(parsedRetentionDataUnclean);
+        console.log(parsedRetentionData)
+        const resultDiv = document.getElementById(targetDiv);
+        resultDiv.textContent = JSON.stringify(parsedRetentionData, null, 2);
+        createUserRetentionGraph(parsedRetentionData)
     } else if (targetDiv === "file3-results"){
         const parsedData = dataRows.map(row => {
             const values = row.split(',');
@@ -107,6 +123,12 @@ reader.onerror = function() {
 };
 
 reader.readAsText(file);
+
+}
+
+function removeNullValues(parsedData) {
+  
+  return parsedData.filter( Boolean );
 
 }
 
@@ -172,14 +194,22 @@ for (const restaurantName in restaurantData) {
         plugins: {legend: {display: false}},
         responsive: true,
         maintainAspectRatio: false,
-        legend: {display: false}
+        legend: {display: false},
+        scales: {x: {
+          gridLines: {color: "rgba(0,0,0,0"}
+        },
+          y: {
+            beginAtZero: true,
+            max: Math.ceil(Math.max(pageViews) * 1.2),
+            stepSize: 1,
+            precision: 0,
+          }
+        }
     }
     });
 }
 
 }
-    
-
 function pageViewPivot(parsedData) {
     let pivotTable = {};
   
@@ -195,7 +225,7 @@ function pageViewPivot(parsedData) {
     }
   
     // Output the pivot table to the div
-    let div = document.getElementById('file2-pivot-results');
+    let div = document.getElementById('file1-pivot-results');
     div.innerHTML = '';
   
     let table = document.createElement('table');
@@ -229,6 +259,8 @@ function pageViewPivot(parsedData) {
     table.appendChild(tbody);
     div.appendChild(table);
     updateDivsWithPivotData(pivotTable);
+    document.getElementById('user-retention-container').style.display = "block"
+    document.getElementById('page-visit-container').classList.remove('unfinished-shadow')
   }
   
   function updateDivsWithPivotData(pivotTable) {
@@ -248,14 +280,6 @@ function pageViewPivot(parsedData) {
       }
     }
   }
-
-
-
-  
-  
-
-  
-
 
 function createRestaurantDivs(parsedData, dateRange) {
     const reportGeneratorDiv = document.getElementById("report-generator");
@@ -282,20 +306,25 @@ function createRestaurantDivs(parsedData, dateRange) {
       const h1 = document.createElement("h1");
       h1.innerHTML = restaurant;
 
-      const headerDescribe = document.createElement("p");
-      headerDescribe.innerHTML = 'Analytics Report - <span class="header-date">'+ dateRange+'</span><br><br>Below is the analysis for your restaurants MyMeal menu interactions.'
+      const reportDate = document.createElement("p");
+      reportDate.innerHTML = '<span class="header-date">'+ dateRange+'</span><br><br>Below is the analysis for your restaurants MyMeal menu interactions.'
 
       title.appendChild(h1)
-      title.appendChild(headerDescribe)
+      title.appendChild(reportDate)
       
-
+      const logoContainer = document.createElement('div');
+      logoContainer.className = "logo-container"
       const logo = document.createElement("img");
-      logo.className = "logo"
       logo.src = "mymeal-logo.png"
+
+      const logoLabel = document.createElement('p');
+      logoLabel.innerHTML = "Analytics Report"
   
       // Append the h1 element to the div
       divHeader.appendChild(title);
-      divHeader.appendChild(logo)
+      divHeader.appendChild(logoContainer)
+      logoContainer.appendChild(logo)
+      logoContainer.appendChild(logoLabel)
   
       // Append the div to the report-generator div
       reportGeneratorDiv.appendChild(div);
@@ -309,6 +338,80 @@ function createRestaurantDivs(parsedData, dateRange) {
     });
   }
   
+function createUserRetentionStructure(restaurant){
+  const pdfContainer = document.getElementById(restaurant);
+  
+  
+  const retentionContainer = document.createElement('div');
+  retentionContainer.className = "retention-container";
+  pdfContainer.appendChild(retentionContainer);
+
+  const retentionTitle = document.createElement('h2'); 
+  retentionTitle.innerHTML = "User Retention"
+  const retentionDescription = document.createElement('p')
+  retentionDescription.innerHTML = "A session starts when the user clicks 'View Allergy Menu'. Each session tracks interaction with menu items, and your order online button (if applicable)."
+  retentionContainer.appendChild(retentionTitle)
+  retentionContainer.appendChild(retentionDescription)
+
+  const retentionChart = document.createElement('div');
+  retentionChart.id = restaurant+'-retention-chart';
+  retentionChart.className = "retention-chart";
+
+  
+  pdfContainer.appendChild(retentionChart)
+  
+}
+
+function createUserRetentionGraph(parsedRetentionData){
+  document.getElementById('user-retention-container').classList.remove('unfinished-shadow')
+  document.getElementById('session-time-container').style.display = "block"
+  // Loop through each item in parsedRetentionData
+parsedRetentionData.forEach(item => {
+  const restaurant = item.restaurant;
+  const viewAllergyMenu = item.viewAllergyMenu;
+  const seeMenuButton = item.seeMenuButton;
+  const menuCardClicked = item.menuCardClicked;
+  const orderOnlineClicked = item.orderOnlineClicked;
+ console.log(restaurant)
+  
+  const graphContainer = document.createElement('canvas')
+  // Append the graph container to the existing div with id "restaurant"
+  const restaurantDiv = document.getElementById(restaurant+'-retention-chart')
+  restaurantDiv.appendChild(graphContainer);
+
+  // Create the bar graph using Chart.js
+  new Chart(graphContainer, {
+    type: 'bar',
+    data: {
+      labels: ['1.View Allergy Menu', '2.See Menu', '3.Menu Card', '4.Order Online'],
+      datasets: [
+        {
+          label: 'Retention',
+          data: [viewAllergyMenu, seeMenuButton, menuCardClicked, orderOnlineClicked],
+          backgroundColor: 'orange',
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      scales: { x: {gridLines: {color: "rgba(0,0,0,0"}},
+        y: {
+          beginAtZero: true,
+          max: Math.ceil(Math.max(viewAllergyMenu)),
+          stepSize: 1
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }, 
+      
+    }
+  });
+});
+
+}
 
   function downloadAsPDF(restaurant) {
     const content = document.getElementById(restaurant);
