@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Parser</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="fileInput" accept=".csv">
+  <br><br>
+  <table id="resultTable"></table>
+
+  <script>
+    // Function to parse the CSV file
+    function parseCSVFile(file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const csvData = e.target.result;
+        const rows = csvData.split("\n");
+        let outputData = [];
+
+        // Process each row of the CSV data
+        for (let i = 0; i < rows.length; i++) {
+          const columns = rows[i].split(",");
+          const allergies = columns[0];
+          const restaurant = columns[1];
+          const sum = columns[2];
+
+          // Remove the first column at index 0
+          columns.shift();
+
+          // Parse the data into three columns: allergies, restaurant, and sum
+          const rowData = [allergies, restaurant, sum];
+          outputData.push(rowData);
+        }
+
+        // Generate the HTML table
+        generateTable(outputData);
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Function to generate the HTML table from the parsed data
+    function generateTable(data) {
+      const table = document.getElementById("resultTable");
+      table.innerHTML = ""; // Clear previous table contents
+
+      // Generate table header
+      const headerRow = document.createElement("tr");
+      const headerNames = ["Allergies", "Restaurant", "Sum"];
+
+      for (let i = 0; i < headerNames.length; i++) {
+        const th = document.createElement("th");
+        th.textContent = headerNames[i];
+        headerRow.appendChild(th);
+      }
+
+      table.appendChild(headerRow);
+
+      // Generate table rows
+      for (let i = 0; i < data.length; i++) {
+        const row = document.createElement("tr");
+
+        for (let j = 0; j < data[i].length; j++) {
+          const td = document.createElement("td");
+          td.textContent = data[i][j];
+          row.appendChild(td);
+        }
+
+        table.appendChild(row);
+      }
+    }
+
+    // Function to handle file import and processing
+    function handleFileImport() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+
+      // Call the function to parse the CSV file
+      parseCSVFile(file);
+    }
+
+    // Add event listener to detect file selection
+    document.getElementById("fileInput").addEventListener("change", handleFileImport);
+  </script>
+</body>
+</html>

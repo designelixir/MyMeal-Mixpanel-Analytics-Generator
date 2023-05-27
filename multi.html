@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mixpanel Report Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="multiscript.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h1>Mixpanel Report Generator</h1>
+
+  <!-- Page Visits -->
+  <div class="file-div">
+    <div class="flex-start-start">
+      <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+          <h3>1. Upload Page Visits Report</h3>
+          <input type="file" id="file2" accept=".csv"><br><br>
+          <button onclick="handleFile('file2', 'file2-results')">Import Page Visits CSV</button>
+      </div>
+      <div>
+          <h3>CSV Import Results</h3>
+          <div id="file2-results" class="csv-results"></div>
+      </div>
+      <div>
+        <h3>Table</h3>
+        <div id="file2-pivot-results" class="csv-results"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="file-div">
+      <div class="flex-start-start">
+        <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+            <h3>Upload Session Time Report</h3>
+            <input type="file" id="file1" accept=".csv"><br><br>
+            <button onclick="handleFile('file1', 'file1-results')">Import Session Time CSV</button>
+        </div>
+        <div>
+            <h3>CSV Import Results</h3>
+            <div id="file1-results" class="csv-results"></div>
+        </div>
+      </div>
+    </div>
+
+    
+
+      <!-- Allergen Preferences -->
+      <div class="file-div">
+        <div class="flex-start-start">
+          <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+              <h3>Upload Allergen Preferences Report</h3>
+              <input type="file" id="file3" accept=".csv"><br><br>
+              <button onclick="handleFile('file3', 'file3-results')">Import Allergen Preferences CSV</button>
+          </div>
+          <div>
+              <h3>CSV Import Results</h3>
+              <div id="file3-results" class="csv-results"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="file-div">
+        <div class="flex-start-start">
+          <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+              <h3>Upload User Retention Report</h3>
+              <input type="file" id="file4" accept=".csv"><br><br>
+              <button onclick="handleFile('file4', 'file4-results')">Import User Retention CSV</button>
+          </div>
+          <div>
+              <h3>CSV Import Results</h3>
+              <div id="file4-results" class="csv-results"></div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="file-div">
+        <div class="flex-start-start">
+          <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
+              <h3>Upload Menu Item Clicks Report</h3>
+              <input type="file" id="file5" accept=".csv"><br><br>
+              <button onclick="handleFile('file5', 'file5-results')">Import Menu Item Clicks CSV</button>
+          </div>
+          <div>
+              <h3>CSV Import Results</h3>
+              <div id="file5-results" class="csv-results"></div>
+          </div>
+        </div>
+      </div>
+
+    
+  </div>
+
+  <div style="border: 3px solid red;">
+    <h2>Process Analytics</h2>
+    <div id="report-generator" class="flex-start-start" >
+        
+    </div>
+
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+
+  .container {
+    margin: 20px auto;
+    
+    border: 1px solid teal;
+    padding: 10px;
+  }
+  .file-div {
+    
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid black;
+  }
+  .csv-results { margin: 0 25px; border: 2px solid teal; max-height: 100px; overflow-y: scroll; white-space:pre-wrap;}
+  .restaurant-container {border: 1px solid red; margin: 10px; padding: 5px; max-height: 100px; overflow-y: scroll;}
+  .input-label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .input-file {
+    margin-bottom: 20px;
+  }
+  #graphs {overflow-x: scroll;}
+  .graph {  max-height: 500px; border: 2px solid lime; margin: 10px; padding: 10px;}
+  #result {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    text-align: left;
+    white-space: pre-wrap;
+    max-height: 100px; overflow-y: scroll;
+  }
+  th { background: lightgray; padding: 10px; }
+  td {min-width: 100px; max-width: 200px; white-space:normal; border: 0.25px solid gray; padding: 5px;}
+
+  .flex-center-center {
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .flex-start-start {
+    display: flex; align-items: flex-start; justify-content: flex-start;
+  }
+#report-generator {overflow-x: scroll;}
+  .pdf {border: 3px solid lime; padding: 15px; margin: 10px; min-width: 816px; width: 816px; }
+.pdf-header {border: 1px solid blue; margin-bottom: 50px; }
+.logo {height: 50px; width: auto; border: 1px solid magenta;}
+  .flex-center-spacebetween {display: flex; align-items: center; justify-content: space-between;}
+  .header-date {color: gray; font-style: italic;}
+
+  .bolded-result {font-size: 24px; font-weight: 400; }
+.page-views {border: 1px solid pink;}
+  .summary-results-container {border: 1px solid red;}
+  .views-chart {max-width: 600px; max-height: 100px; border: 1px solid lime;}
