@@ -71,7 +71,28 @@ function parseCSVFile(file, targetDiv) {
         resultDiv.textContent = JSON.stringify(parsedRetentionData, null, 2);
         createUserRetentionGraph(parsedRetentionData)
     } else if (targetDiv === "file3-results"){
-        const parsedData = dataRows.map(row => {
+      const parsedSessionDataUnclean = dataRows.filter( Boolean ).map(row => {
+        const values = row.split(',');
+        const date = values[0];
+        const sessionLength = values[2];
+        const restaurantUrl = values[3];
+        const sessionCount = Number(values[4])
+        return { date, sessionLength, restaurantUrl, sessionCount };
+        
+        });
+        const parsedSessionData = removeNullValues(parsedSessionDataUnclean);
+        const resultDiv = document.getElementById(targetDiv);
+        resultDiv.textContent = JSON.stringify(parsedSessionData, null, 2);
+        createSessionDataPivot(parsedSessionData)
+
+       
+        //createRestaurantDivs(parsedData, dateRange);
+        //pageViewPivot(parsedData);
+        // createLineGraph(parsedData);
+        //createRestaurantData(parsedData);
+    }
+     else if (targetDiv === "file4-results"){ 
+        const parsedAllergenData = dataRows.filter( Boolean ).map(row => {
             const values = row.split(',');
     
             // get the number of sessions that lasted x time 
@@ -82,25 +103,10 @@ function parseCSVFile(file, targetDiv) {
             return {allergen, restaurant, totalSelections};
             
             });
+            generateRestaurantAllergenSummary(parsedAllergenData)
             const resultDiv = document.getElementById(targetDiv);
-            resultDiv.textContent = JSON.stringify(parsedData, null, 2);
-    } else if (targetDiv === "file4-results"){
-        const parsedData = dataRows.map(row => {
-            const values = row.split(',');
-    
-            // get the number of sessions that lasted x time 
-            
-            const restaurant = values[0].trim()
-            const totalAudience = Number(values[1]);
-            const seeMenuButtonClicks = Number(values[2]);
-            const menuCardClicks = Number(values[3]);
-            const orderOnlineClicks = Number(values[4]);
-            return {restaurant, totalAudience, seeMenuButtonClicks, menuCardClicks, orderOnlineClicks};
-            
-            });
-            const resultDiv = document.getElementById(targetDiv);
-            resultDiv.textContent = JSON.stringify(parsedData, null, 2);
-    } else if (targetDiv === "file5-results"){
+            resultDiv.textContent = JSON.stringify(parsedAllergenData, null, 2);
+    }  else if (targetDiv === "file5-results"){
         const parsedData = dataRows.map(row => {
             const values = row.split(',');
     
@@ -126,10 +132,101 @@ reader.readAsText(file);
 
 }
 
-function removeNullValues(parsedData) {
-  
-  return parsedData.filter( Boolean );
+function removeNullValues(parsedData) {return parsedData.filter( Boolean );}
 
+function generateRestaurantAllergenSummary(parsedAllergenData, restaurantName) {
+  const restaurantSummary = {};
+  
+  parsedAllergenData.forEach(item => {
+    const { allergen, restaurant, totalSelections } = item;
+    
+    if (!restaurantSummary[restaurant]) {
+      restaurantSummary[restaurant] = {};
+    }
+    
+    if (restaurantSummary[restaurant][allergen]) {
+      restaurantSummary[restaurant][allergen] += totalSelections;
+    } else {
+      restaurantSummary[restaurant][allergen] = totalSelections;
+    }
+    const targetDivId = restaurantName;
+    createAllergenTable(restaurantSummary, targetDivId )
+  });
+  console.log(restaurantSummary)
+  
+ 
+  return restaurantSummary;
+}
+
+function createAllergenTable(restaurantSummary, restaurantName) {
+  const targetDiv = document.getElementById(restaurantName);
+  
+  // Create a new div for the allergen table
+  const allergenTableDiv = document.createElement('div');
+  allergenTableDiv.classList.add('allergen-table');
+  
+  // Create the table element
+  const table = document.createElement('table');
+  
+  // Create the table headers
+  const tableHeaders = ['Restaurant'].concat(Object.keys(restaurantSummary));
+  const headerRow = document.createElement('tr');
+  
+  tableHeaders.forEach(headerText => {
+    const headerCell = document.createElement('th');
+    headerCell.textContent = headerText;
+    headerRow.appendChild(headerCell);
+  });
+  
+  table.appendChild(headerRow);
+  
+  // Create the table rows with data
+  for (const restaurant in restaurantSummary) {
+    const rowData = [restaurant].concat(Object.values(restaurantSummary[restaurant]));
+    const row = document.createElement('tr');
+    
+    rowData.forEach(cellData => {
+      const cell = document.createElement('td');
+      cell.textContent = cellData;
+      row.appendChild(cell);
+    });
+    
+    table.appendChild(row);
+  }
+  
+  // Append the table to the allergen table div
+  allergenTableDiv.appendChild(table);
+  
+  // Append the allergen table div to the target div
+  targetDiv.appendChild(allergenTableDiv);
+}
+
+
+
+
+
+
+
+
+
+for (const restaurant in restaurantSummary) {
+  const allergenChartDiv = document.createElement('div');
+  allergenChartDiv.classList.add('allergen-chart');
+  
+  const allergenTable = createAllergenTable(restaurantSummary[restaurant]);
+  allergenChartDiv.appendChild(allergenTable);
+
+  const restaurantDivId = restaurant;
+  const targetDiv = document.getElementById(restaurantDivId);
+  if (targetDiv) {
+    targetDiv.appendChild(allergenChartDiv);
+  }
+}
+
+
+function createSessionDataPivot(parsedSessionData){
+  document.getElementById('session-time-container').classList.remove('unfinished-shadow');
+  document.getElementById('allergen-container').style.display = "block"
 }
 
 function createRestaurantData(parsedData) {
