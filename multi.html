@@ -3,9 +3,17 @@
 <head>
   <title>Mixpanel Report Generator</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="multiscript.js"></script>
+  <script src="multiscriptv2.js"></script>
+  <script src="file1script.js"></script>
+  <script src="file2script.js"></script>
+  <script src="file3script.js"></script>
+  <script src="file4script.js"></script>
+  <script src="file5script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
   <h1>Mixpanel Report Generator</h1>
@@ -14,7 +22,7 @@
   <div class="file-div unfinished-shadow" id="page-visit-container">
     <div class="flex-start-start">
       <div style="margin-right: 50px;">
-          <h3>1. Upload Page Visits Report</h3>
+          <h3>1. Upload Page Visits Report</h3><br>
           <input type="file" id="file1" accept=".csv"><br><br>
           <button onclick="handleFile('file1', 'file1-results')">Import Page Visits CSV</button>
       </div>
@@ -35,7 +43,7 @@
   <div class="file-div unfinished-shadow" id="user-retention-container" style="display: none;">
     <div class="flex-start-start">
       <div style="margin-right: 50px;">
-          <h3>2. Upload User Retention Report</h3>
+          <h3>2. Upload User Retention Report</h3><br>
           <input type="file" id="file2" accept=".csv"><br><br>
           <button onclick="handleFile('file2', 'file2-results')">Import User Retention CSV</button>
       </div>
@@ -49,18 +57,21 @@
   </div>
 
   <div class="file-div unfinished-shadow" id="session-time-container" style="display: none;">
-    
-        <h3>3. Upload Session Time Report</h3>
+        <h3>3. Upload Session Time Report</h3><br>
         <div style="margin-right: 50px;" class="flex-start-start">
           <div style="margin-right: 50px;">
             <input type="file" id="file3" accept=".csv"><br><br>
             <button onclick="handleFile('file3', 'file3-results')">Import Session Time CSV</button>
           </div>
-          <div>
+          <div style="margin-right: 50px">
             <h3>CSV Import Results</h3>
             <div id="file3-results" class="csv-results"></div>
         </div>
-        <div id="session-time-pivot">Session Duration Summary</div>
+        <div>
+          <h3>User Session Time Summary</h3>
+          <div id="session-time-pivot" class="csv-results"></div>
+        </div>
+        
         
         </div>
     
@@ -69,19 +80,52 @@
   <div class="file-div unfinished-shadow" id="allergen-container" style="display: none;">
     
     <h3>4. Upload Allergen Card Report</h3>
-    <p>You must clean the data using Google Scripts first. </p>
+    <p style="color: red;">You must clean the data using Google Scripts first. </p>
+    <ol>
+      <li><a href="https://docs.google.com/spreadsheets/d/1xtcoAOcqkZ95U9uZgT93rhHcF_kCs12kZ4D61QF3Y1E/edit?usp=sharing" target="_blank">Click here.</a></li>
+      <li>Go to "File" > "Import"</li>
+      <li>Upload the Allergen Card CSV file from MixPanel</li>
+      <li>Make sure to change "Import Location" to  "Insert new sheet(s)", then click Import Data</li>
+      <li>Navigate to the newly added sheet, and under "Extensions" > "Macros", click "Process Sheet"</li>
+      <li>Then, go to "File" > "Download" > "Comma Seperated Values (csv)"</li>
+      <li>Now you can add the cleaned data to the generator below.</li>
+    </ul>
+    <br>
     <div style="margin-right: 50px;" class="flex-start-start">
       <div style="margin-right: 50px;">
         <input type="file" id="file4" accept=".csv"><br><br>
         <button onclick="handleFile('file4', 'file4-results')">Import Allergen Card CSV</button>
       </div>
-      <div>
+      <div style="margin-right: 50px;">
         <h3>CSV Import Results</h3>
         <div id="file4-results" class="csv-results"></div>
     </div>
-    <div id="session-time-pivot">Allergens Summary</div>
-    
+    <div>
+      <h3>User Session Time Summary</h3>
+      <div id="allergen-pivot" class="csv-results"></div>
     </div>
+    </div>
+
+</div>
+
+<div class="file-div unfinished-shadow" id="allergen-container" >
+    
+  <h3>5. Upload Menu Item Click Report</h3>
+  <br>
+  <div style="margin-right: 50px;" class="flex-start-start">
+    <div style="margin-right: 50px;">
+      <input type="file" id="file5" accept=".csv"><br><br>
+      <button onclick="handleFile('file5', 'file5-results')">Import Menu Item Click CSV</button>
+    </div>
+    <div style="margin-right: 50px;">
+      <h3>CSV Import Results</h3>
+      <div id="file5-results" class="csv-results"></div>
+  </div>
+  <div>
+    <h3>User Session Time Summary</h3>
+    <div id="allergen-pivot" class="csv-results"></div>
+  </div>
+  </div>
 
 </div>
 
@@ -105,8 +149,8 @@
     
   </div>
 
-  <div style="border: 3px solid red;">
-    <h2>Process Analytics</h2>
+  <div>
+    <h2>Generated PDFS</h2>
     <div id="report-generator" class="flex-start-start" >
         
     </div>

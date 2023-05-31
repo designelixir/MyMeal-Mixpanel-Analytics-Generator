@@ -1,98 +1,98 @@
-function createPivotTable(parsedData) {
-  const pivotTable = {};
+// function createPivotTable(parsedData) {
+//   const pivotTable = {};
 
-  // Sum up the values of "sessionCount" for each unique combination of "restaurant" and "session"
-  parsedData.forEach(obj => {
-    const restaurant = obj.restaurant;
-    const session = obj.session;
-    const sessionCount = obj.sessionCount;
+//   // Sum up the values of "sessionCount" for each unique combination of "restaurant" and "session"
+//   parsedData.forEach(obj => {
+//     const restaurant = obj.restaurant;
+//     const session = obj.session;
+//     const sessionCount = obj.sessionCount;
 
-    // Ignore undefined values for restaurant or session
-    if (restaurant === undefined || session === undefined) {
-      return;
-    }
+//     // Ignore undefined values for restaurant or session
+//     if (restaurant === undefined || session === undefined) {
+//       return;
+//     }
 
-    // Ignore restaurants containing "localhost:8080"
-    if (restaurant.includes('localhost:8080')) {
-      return;
-    }
+//     // Ignore restaurants containing "localhost:8080"
+//     if (restaurant.includes('localhost:8080')) {
+//       return;
+//     }
 
-    if (!pivotTable[restaurant]) {
-      pivotTable[restaurant] = {};
-    }
+//     if (!pivotTable[restaurant]) {
+//       pivotTable[restaurant] = {};
+//     }
 
-    if (!pivotTable[restaurant][session]) {
-      pivotTable[restaurant][session] = 0;
-    }
+//     if (!pivotTable[restaurant][session]) {
+//       pivotTable[restaurant][session] = 0;
+//     }
 
-    pivotTable[restaurant][session] += sessionCount;
-  });
+//     pivotTable[restaurant][session] += sessionCount;
+//   });
 
-  const groupRestaurantsDiv = document.getElementById('groupRestaurants');
+//   const groupRestaurantsDiv = document.getElementById('groupRestaurants');
   
-  // Clear the content of the div
-  groupRestaurantsDiv.innerHTML = '';
+//   // Clear the content of the div
+//   groupRestaurantsDiv.innerHTML = '';
 
-  // Get all unique session values
-  const sessions = new Set();
-  Object.values(pivotTable).forEach(restaurant => {
-    Object.keys(restaurant).forEach(session => {
-      sessions.add(session);
-    });
-  });
+//   // Get all unique session values
+//   const sessions = new Set();
+//   Object.values(pivotTable).forEach(restaurant => {
+//     Object.keys(restaurant).forEach(session => {
+//       sessions.add(session);
+//     });
+//   });
 
-  // Sort the session values
-  const sortedSessions = Array.from(sessions).sort();
+//   // Sort the session values
+//   const sortedSessions = Array.from(sessions).sort();
 
-  // Get all unique restaurants and sort them alphabetically
-  const restaurants = Object.keys(pivotTable).sort();
+//   // Get all unique restaurants and sort them alphabetically
+//   const restaurants = Object.keys(pivotTable).sort();
 
-  // Create a table for the pivot table data
-  const table = document.createElement('table');
+//   // Create a table for the pivot table data
+//   const table = document.createElement('table');
 
-  // Create table headers
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
+//   // Create table headers
+//   const thead = document.createElement('thead');
+//   const headerRow = document.createElement('tr');
 
-  // Create empty cell for the top-left corner
-  const emptyHeader = document.createElement('th');
-  headerRow.appendChild(emptyHeader);
+//   // Create empty cell for the top-left corner
+//   const emptyHeader = document.createElement('th');
+//   headerRow.appendChild(emptyHeader);
 
-  // Create table headers for each session
-  sortedSessions.forEach(session => {
-    const sessionHeader = document.createElement('th');
-    sessionHeader.textContent = session;
-    headerRow.appendChild(sessionHeader);
-  });
+//   // Create table headers for each session
+//   sortedSessions.forEach(session => {
+//     const sessionHeader = document.createElement('th');
+//     sessionHeader.textContent = session;
+//     headerRow.appendChild(sessionHeader);
+//   });
 
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
+//   thead.appendChild(headerRow);
+//   table.appendChild(thead);
 
-  // Create table rows for each restaurant
-  const tbody = document.createElement('tbody');
-  restaurants.forEach(restaurant => {
-    const row = document.createElement('tr');
+//   // Create table rows for each restaurant
+//   const tbody = document.createElement('tbody');
+//   restaurants.forEach(restaurant => {
+//     const row = document.createElement('tr');
 
-    // Create restaurant cell
-    const restaurantCell = document.createElement('td');
-    restaurantCell.textContent = restaurant;
-    row.appendChild(restaurantCell);
+//     // Create restaurant cell
+//     const restaurantCell = document.createElement('td');
+//     restaurantCell.textContent = restaurant;
+//     row.appendChild(restaurantCell);
 
-    // Create table cells for each session and populate with the sum of sessionCount values
-    sortedSessions.forEach(session => {
-      const cell = document.createElement('td');
-      const sum = pivotTable[restaurant][session] || 0;
-      cell.textContent = sum;
-      row.appendChild(cell);
-    });
+//     // Create table cells for each session and populate with the sum of sessionCount values
+//     sortedSessions.forEach(session => {
+//       const cell = document.createElement('td');
+//       const sum = pivotTable[restaurant][session] || 0;
+//       cell.textContent = sum;
+//       row.appendChild(cell);
+//     });
 
-    tbody.appendChild(row);
-  });
+//     tbody.appendChild(row);
+//   });
 
-  table.appendChild(tbody);
-  groupRestaurantsDiv.appendChild(table);
-  createBarGraphs(pivotTable)
-}
+//   table.appendChild(tbody);
+//   groupRestaurantsDiv.appendChild(table);
+//   createBarGraphs(pivotTable)
+// }
 
 
 
