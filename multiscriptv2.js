@@ -1,4 +1,4 @@
-window.jsPDF = window.jspdf.jsPDF;
+
 //Parse the CSV file. 
 function handleFile(fileName, resultTargetDiv) {
     const fileInput = document.getElementById(fileName);
@@ -59,6 +59,7 @@ function formatDateRange(dateRangeString) {
   
   function downloadDivAsPDF(divId, filename) {
     const element = document.getElementById(divId);
+    console.log("element is " + element)
     if (!element) {
       console.error(`Element with ID '${divId}' not found.`);
       return;
@@ -73,12 +74,22 @@ function formatDateRange(dateRangeString) {
   
     // Convert the div element to a canvas
     html2canvas(element, { scale: 2 }).then(canvas => {
+      var image = new Image();
+      image.crossOrigin = "anonymous";  // This enables CORS
+      image.onload = function (event) {
+          try {
+            const imageData = canvas.toDataURL('image/png');
+            pdf.addImage(imageData, 'PNG', 0, 0, width, height);
+  
+          } catch (e) {
+              alert(e);
+          }
+      };
       // Create an image data URL from the canvas
-      const imageData = canvas.toDataURL('image/png');
+      
   
       // Add the image to the PDF
-      pdf.addImage(imageData, 'PNG', 0, 0, width, height);
-  
+      
       // Save the PDF
       pdf.save(filename);
     });

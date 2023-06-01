@@ -17,7 +17,9 @@ function file5Analyze(dataRows, targetDiv){
 }
 
 function createMenuItemArray(parsedMenuItemData) {
-    const menuItemArray = [];
+  const dateRangeOfPDF = getInput();
+  console.log(dateRangeOfPDF)  
+  const menuItemArray = [];
   
     for (let i = 0; i < parsedMenuItemData.length; i++) {
       const data = parsedMenuItemData[i];
@@ -58,7 +60,8 @@ function createMenuItemArray(parsedMenuItemData) {
       restaurantDiv.appendChild(menuItemList)
   
       const menuItemDescription = document.createElement('h3')
-      menuItemDescription.textContent = "Top 10 Menu Items"
+      menuItemDescription.textContent = "Top Menu Items"
+      
       
       menuItemList.appendChild(menuItemDescription)
         // Create a table for the restaurant
@@ -79,46 +82,31 @@ function createMenuItemArray(parsedMenuItemData) {
         }
   
         menuItemList.appendChild(list);
-        const fileName = restaurant.replace(/\s/g, '') + '-Analytics';
+        const fileName = restaurant.replace(/\s/g, '') + '-Analytics-' + dateRangeOfPDF;
+        document.getElementById('menu-items-container').classList.remove('unfinished-shadow')
+        document.getElementById('generate-buttons').style.display = "block"
+        // generateButtons(fileName, restaurant)
+
         
-        console.log(fileName)
-        const pdfWrapper = document.getElementById(restaurant+'-pdf-wrapper');
-        const downloadButton = document.createElement('button');
-        downloadButton.textContent = "Download " + restaurant + " Report"
-        downloadButton.onclick = downloadDivAsPDF(restaurant, fileName)
-
-        pdfWrapper.appendChild(downloadButton)
-
-        // downloadDivAsPDF(divId, filename)
       }
     }
     
   }
-  
-  
+ 
+  function getInput() {
+    const userInput = prompt('Please enter the date range of the analytics reports. ie: 5.1.2023-5.31.2023');
+    return userInput;
+  }
 
-// function createMenuItemArray(parsedMenuItemData) {
-//     const menuItemArray = [];
+function generateButtons(fileName, restaurant) {
+  const pdfWrapper = document.getElementById(restaurant+'-pdf-wrapper');
+  const downloadButton = document.createElement('div');
+  downloadButton.className = 'download-button'
+  downloadButton.id = restaurant+'-download-button'
+  downloadButton.textContent = "Download " + restaurant + " Report"
+  pdfWrapper.appendChild(downloadButton)
   
-//     for (let i = 0; i < parsedMenuItemData.length; i++) {
-//       const data = parsedMenuItemData[i];
-//       const restaurant = data.restaurant;
-//       const menuItem = data.menuItem;
-//       const totalSelections = Number(data.menuSelections);
-  
-//       // Check if the restaurant exists in allergenArray
-//       const existingRestaurant = menuItemArray.find(item => Object.keys(item)[0] === restaurant);
-  
-//       if (existingRestaurant) {
-//         // If the restaurant already exists, update the allergen-totalSelections pair
-//         existingRestaurant[restaurant][menuItem] = (existingRestaurant[restaurant][menuItem] || 0) + totalSelections;
-//       } else {
-//         // If the restaurant is new, create a new allergen-totalSelections pair
-//         const menuItemPair= { [restaurant]: { [menuItem]: totalSelections } };
-//         menuItemArray.push(menuItemPair);
-//       }
-//     }
-    
-//     console.log(menuItemArray);
-    
-//   }
+  downloadButton.onclick = downloadDivAsPDF(restaurant, fileName)
+} 
+
+

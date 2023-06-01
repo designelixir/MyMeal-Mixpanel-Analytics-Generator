@@ -1,9 +1,10 @@
+
+
 function file2Analyze(dataRows, targetDiv){
     const parsedRetentionDataUnclean = dataRows.map(row => {
         const values = row.split(',');
         
         if (values[0] === "$overall" || values[0] === "" || values[0] === "undefined"){
-          console.log("skipped blank value")
         } else {
           const restaurant = values[0]
           const viewAllergyMenu = Number(values[1]);
@@ -18,10 +19,7 @@ function file2Analyze(dataRows, targetDiv){
        
         
         });
-        
-        console.log(parsedRetentionDataUnclean)
         const parsedRetentionData = removeNullValues(parsedRetentionDataUnclean);
-        console.log(parsedRetentionData)
         const resultDiv = document.getElementById(targetDiv);
         resultDiv.textContent = JSON.stringify(parsedRetentionData, null, 2);
         createUserRetentionGraph(parsedRetentionData)
@@ -38,13 +36,13 @@ function createUserRetentionStructure(restaurant){
     const retentionTitle = document.createElement('h3'); 
     retentionTitle.innerHTML = "User Retention"
     const retentionDescription = document.createElement('p')
-    retentionDescription.innerHTML = "A session starts when the user clicks 'View Allergy Menu'. Each session tracks interaction with menu items, and your order online button (if applicable)."
+    retentionDescription.innerHTML = "User Retention tracks how your menu is interacted with, not just overall page views. <strong>1.View Menu:</strong> a user agreed to Terms &amp; Conditions. <strong>2. See Menu:</strong> a user selected their food restrictions <strong>3. Menu Card:</strong> a user clicked a menu item for more information. <strong>4. Order Online: </strong>a user clicked the Order Online button (only applicable if you have one active)"
     retentionContainer.appendChild(retentionTitle)
     retentionContainer.appendChild(retentionDescription)
     
     // Create container for charts
     const retentionData = document.createElement('div');
-    retentionData.className = "retention-data-container flex-start-spacebetween"
+    retentionData.className = "retention-data-container flex-end-spacebetween"
     retentionData.id = restaurant+'-retention-data-container';
     retentionContainer.appendChild(retentionData)
 
@@ -52,6 +50,9 @@ function createUserRetentionStructure(restaurant){
     retentionChart.id = restaurant+'-retention-chart';
     retentionChart.className = "retention-chart";
     retentionData.appendChild(retentionChart)
+
+
+
     
   }
 
@@ -68,21 +69,25 @@ function createUserRetentionStructure(restaurant){
 
     
     const graphContainer = document.createElement('canvas')
+    const retentionChartTitle = document.createElement('h4');
+    retentionChartTitle.innerHTML = "<br>User Conversion &amp; Drop-Off"
     // Append the graph container to the existing div with id "restaurant"
     const restaurantDiv = document.getElementById(restaurant+'-retention-chart')
+    restaurantDiv.appendChild(retentionChartTitle)
     restaurantDiv.appendChild(graphContainer);
   
     // Create the bar graph using Chart.js
     new Chart(graphContainer, {
       type: 'bar',
       data: {
-        labels: ['1.View Allergy Menu', '2.See Menu', '3.Menu Card', '4.Order Online'],
+        labels: ['1.View Menu', '2.See Menu', '3.Menu Card', '4.Order Online'],
         datasets: [
           {
             label: 'Retention',
             data: [viewAllergyMenu/viewAllergyMenu*100, seeMenuButton/viewAllergyMenu*100, menuCardClicked/viewAllergyMenu*100, orderOnlineClicked/viewAllergyMenu*100],
             backgroundColor: 'orange',
-            borderWidth: 1
+            borderWidth: 1,
+            fontFamily: 'Poppins'
           }
         ]
       },
@@ -90,10 +95,6 @@ function createUserRetentionStructure(restaurant){
         responsive: true, 
         showTooltips: false,
         plugins: {
-            title: {
-                display: true,
-                text: 'User Funnel Retention & Conversion'
-            },
             legend: {display: false}
 
         },
@@ -121,7 +122,9 @@ function createUserRetentionStructure(restaurant){
             }
           },
           layout: {autoPadding: true},
-        scales: { x: {gridLines: {color: "rgba(0,0,0,0"}},
+        scales: { x: {ticks: {
+          maxRotation: 0, minRotation: 0
+        }},
           y: {
             beginAtZero: true,
             max: 100,

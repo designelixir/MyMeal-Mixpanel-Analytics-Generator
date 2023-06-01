@@ -1,16 +1,24 @@
+
 body {background: lightgray;}
-h1, h2, h3, h4, h5, h6, p, a {margin: 5px 0px auto !important;}
+h1, h2, h3, h4, h5, h6, p, a {margin: 2px 0px auto !important; font-family: 'Poppins', sans-serif;}
+p {font-size: 14px;}
+.bottom-page-wrapper {
+  padding-top: 25px;
+}
+h4 {color: gray;}
+p strong {font-weight: 600;}
 .flex-center-center {display: flex; align-items: center; justify-content: center;}
 .flex-start-start {display: flex; align-items: flex-start; justify-content: flex-start;}
 .flex-start-spacebetween {display: flex; align-items: flex-start; justify-content: space-between;}
 .flex-center-spacebetween {display: flex; align-items: center; justify-content: space-between;}
-
+.flex-end-spacebetween {display: flex; align-items: flex-end; justify-content: space-between;}
 .file-div {padding: 10px; margin: 10px; background: white;}
 .unfinished-shadow {box-shadow: inset 0 0 5px red; border: 1px solid red;}
 input {max-width: 250px; overflow: scroll;}
 .results {margin: 0px 50px 0px 0px;}
 .csv-results { max-height: 100px; max-width: 25vw; overflow-y: scroll; border: 1px solid black; white-space:pre-wrap;}
 
+.download-button {width: 100%; padding: 25px; text-align: center; background-color: gray;} 
 /* Generated PDFs */
 #report-generator {overflow-x: scroll;}
 
@@ -21,14 +29,17 @@ input {max-width: 250px; overflow: scroll;}
 .pdf {border: 3px solid black; background: white;  padding: 50px; margin: 10px; min-width: 816px; width: 100%; max-width: 816px; }
 .pdf-header {margin-bottom: 50px; }
 .logo-container {text-align: right;}
-.logo-container p { font-weight: 700; font-size: 18px; }
+.pdf-header h5 { font-weight: 400; font-size: 22px; color: #4997CD}
+.header-date {color: gray; font-style: italic; font-weight: 400; font-size: 18px;}
 .logo-container img {height: 50px; width: auto;}
-.bolded-result {font-size: 32px; font-weight: 400; }
-.views-chart {max-width: 650px; max-height: 135px; }
+.bolded-result {font-size: 48px; font-weight: 400; }
+.chart-container { width: 500px;}
+.views-chart {max-width: 625px; max-height: 175px;  }
 #session-time-pivot {max-height: 200px; overflow-y: scroll;}
-.session-time-graph {max-width: 350px;  width: 100%; }
+.session-time-graph {width: 350px;}
+.retention-data-container {height: 250px;}
 .retention-chart {width: 400px;}
-.allergen-data-wrapper {height: 300px; width: 500px;  margin-top: 10px;}
+.allergen-data-wrapper { width: 500px;  margin-top: 10px;}
 .allergen-container {max-width: 500px; max-height: 500px; padding-right: 25px;}
 .alergen-data-wrapper {height: 400px; width: 500px; }
 .pdf-wrapper {border: 5px solid magenta;}
@@ -58,7 +69,6 @@ input {max-width: 250px; overflow: scroll;}
 
 
   
-  .header-date {color: gray; font-style: italic;}
 
 
-canvas {margin: 15px 0px;}
+

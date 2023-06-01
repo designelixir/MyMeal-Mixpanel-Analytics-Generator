@@ -12,7 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
@@ -108,7 +108,7 @@
 
 </div>
 
-<div class="file-div unfinished-shadow" id="allergen-container" >
+<div class="file-div unfinished-shadow" id="menu-items-container" style="display: none;">
     
   <h3>5. Upload Menu Item Click Report</h3>
   <br>
@@ -129,25 +129,16 @@
 
 </div>
 
-  <div class="container" style="display: none;">
-
-
-      <div class="file-div">
-        <div class="flex-start-start">
-          <div style="border-right: 1px solid gray; padding-right: 10px; margin-right: 10px;">
-              <h3>Upload Menu Item Clicks Report</h3>
-              <input type="file" id="file5" accept=".csv"><br><br>
-              <button onclick="handleFile('file5', 'file5-results')">Import Menu Item Clicks CSV</button>
-          </div>
-          <div>
-              <h3>CSV Import Results</h3>
-              <div id="file5-results" class="csv-results"></div>
-          </div>
-        </div>
-      </div>
-
+<div class="file-div unfinished-shadow" id="generate-buttons" style="display: none;">
     
-  </div>
+  <h3>6. Generate PDF Download Buttons</h3>
+  <p>Type the date range for these analytics reports - ie, "5.1.2023-6.1.2023"</p>
+  <input type="text" id="inputValue" />
+  <button onclick="convertToString()">Create PDF Buttons</button>
+  <div id="output"></div>
+</div>
+
+
 
   <div>
     <h2>Generated PDFS</h2>

@@ -335,7 +335,7 @@ function rewriteValue(parsedData, targetDiv) {
     // Output the pivot table into the specified div element
     const pivotDiv = document.getElementById("session-time-pivot");
     pivotDiv.innerHTML = tableHTML;
-    console.log("pivot array is ", pivotArray);
+    
     
     return pivotArray;
   }
@@ -346,7 +346,7 @@ function rewriteValue(parsedData, targetDiv) {
 
         var current = pivotRow;
         var restaurantId = current[0];
-        // console.log("the restaurant name is "+current)
+        
         var restaurantPdf = document.getElementById(restaurantId+'-retention-data-container');
         
         if (restaurantPdf){
@@ -354,6 +354,10 @@ function rewriteValue(parsedData, targetDiv) {
             barGraphContainer.classList="session-time-graph";
             barGraphContainer.id = restaurantId + "-pie-chart"
             restaurantPdf.appendChild(barGraphContainer);
+
+            const barGraphTitle = document.createElement('h4');
+            barGraphTitle.innerHTML = "Session Duration per User"
+            barGraphContainer.appendChild(barGraphTitle)
             
             const canvas = document.createElement('canvas');
             canvas.id = 'horizontal-bar-chart';
@@ -367,44 +371,41 @@ function rewriteValue(parsedData, targetDiv) {
                 datasets: [{
                   label: 'Current',
                   data: current,
-                  backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue color
+                  backgroundColor: 'gold', 
                 }]
               },
               options: {
                 layout: {autoPadding: true},
-                indexAxis: 'y',
+                
                 plugins: {
-                    title: {
-                        display: true,
-                        text: 'Session Time in Seconds per User'
-                    },
                     legend: {display: false}
 
                 },
                 
-                responsive: true,
+                
                 scales: {
                   x: {
-                    title: {display: true, text: "Total Users"},
+                    title: {display: true, text: "Session Time in Seconds"},
                     beginAtZero: true, 
                     // max: maxValue,
-                    ticks: {stepSize: 1}
+                    ticks: {stepSize: 1, maxRotation: 90, minRotation: 90, callback: function (value, index, ticks) {
+                     const values = [
+                         "0-10", "10-20", "20-30", "30-40", "40-50",
+                         "50-60", "60-70", "70-80", "80-90", "90-100", "100-110",
+                         "110-120", ">=120"
+                       ]
+                       if (value > 0){
+                         return values[index-1];
+                     }
+                     
+                     
+                   }}
                   },
                   y: {
                     beginAtZero: true,
+                    title: {display: true, text: "Number of Users"},
                     
-                    ticks: {stepSize: 1, callback: function (value, index, ticks) {
-                        const values = [
-                            "0-10", "10-20", "20-30", "30-40", "40-50",
-                            "50-60", "60-70", "70-80", "80-90", "90-100", "100-110",
-                            "110-120", ">=120"
-                          ]
-                          if (value > 0){
-                            return values[index-1] + 'secs';
-                        }
-                        
-                        
-                      }}
+                    
                   }
                 }
               }
@@ -418,6 +419,8 @@ function rewriteValue(parsedData, targetDiv) {
         } else {
             console.log("div does not exist")
         }
+        
+        
     }
   
   

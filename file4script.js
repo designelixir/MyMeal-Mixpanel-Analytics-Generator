@@ -15,6 +15,8 @@ function file4Analyze(dataRows, targetDiv){
         resultDiv.textContent = JSON.stringify(parsedAllergenData, null, 2);
         createAllergenPivotTable(parsedAllergenData);
         createAllergenArray(parsedAllergenData)
+        document.getElementById('allergen-container').classList.remove('unfinished-shadow')
+        document.getElementById('menu-items-container').style.display = "block"
 }
 
 function createAllergenArray(parsedAllergenData) {
@@ -39,7 +41,7 @@ function createAllergenArray(parsedAllergenData) {
       }
     }
   
-    console.log(allergenArray);
+    
     createAllergenTables(allergenArray)
   }
 
@@ -64,13 +66,18 @@ function createAllergenArray(parsedAllergenData) {
         const allergenDivHeader = document.createElement('h3');
         allergenDivHeader.textContent = "Allergens"
         const allergenDivDescription = document.createElement('p');
-        allergenDivDescription.textContent = "Here are the number of times a user selected an allergen card before looking at your menu."
+        allergenDivDescription.innerHTML = "This pie chart represents the allergens users selected <br> before looking at your filterable menu."
         allergenContainerDiv.appendChild(allergenDivHeader);
         allergenContainerDiv.appendChild(allergenDivDescription);
 
         const allergenDataWrapper = document.createElement('div');
         allergenDataWrapper.className = "allergen-data-wrapper";
         allergenContainerDiv.append(allergenDataWrapper);
+
+        const allergenChartTitle = document.createElement('h4');
+        allergenChartTitle.innerHTML = 'Allergen Cards Selected';
+        
+        allergenDataWrapper.appendChild(allergenChartTitle)
   
         
         
@@ -132,13 +139,13 @@ function createAllergenArray(parsedAllergenData) {
             ],
           },
           options: {
-            aspectRatio: 1|2,
+            aspectRatio: 2|2,
           }
 
         });
         Chart.overrides.pie.plugins.legend.display = true;
         
-        Chart.overrides.pie.plugins.legend.position = "right";
+        Chart.overrides.pie.plugins.legend.position = "left";
         Chart.overrides.pie.plugins.legend.labels.generateLabels =  function (chart) {
             const data = chart.data;
             if (data.labels.length && data.datasets.length) {

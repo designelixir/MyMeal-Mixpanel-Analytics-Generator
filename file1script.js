@@ -43,25 +43,28 @@ function createRestaurantDivs(parsedData, dateRange) {
         div.id = restaurant;
         divHolder.appendChild(div)
         const divHeader = document.createElement("div");
-        divHeader.className = "pdf-header flex-center-spacebetween";
+        divHeader.className = "pdf-header flex-start-spacebetween";
         div.appendChild(divHeader);
         const title = document.createElement("div")
         const h1 = document.createElement("h1");
         h1.innerHTML = restaurant;
         const reportDate = document.createElement("p");
-        reportDate.innerHTML = '<span class="header-date">' + dateRange + '</span><br><br>Below is the analysis for your restaurants MyMeal menu interactions.'
+        reportDate.innerHTML = '<span class="header-date">' + dateRange + '</span>'
+        const logoLabel = document.createElement('h5');
+        logoLabel.innerHTML = "Analytics Report"
         title.appendChild(h1)
-        title.appendChild(reportDate)
+        title.appendChild(logoLabel)
+        
         const logoContainer = document.createElement('div');
         logoContainer.className = "logo-container"
         const logo = document.createElement("img");
         logo.src = "mymeal-logo.png"
-        const logoLabel = document.createElement('p');
-        logoLabel.innerHTML = "Analytics Report"
+        
         divHeader.appendChild(title);
         divHeader.appendChild(logoContainer)
         logoContainer.appendChild(logo)
-        logoContainer.appendChild(logoLabel)
+        logoContainer.appendChild(reportDate)
+        
         reportGeneratorDiv.appendChild(divHolder);
     });
 }
@@ -129,10 +132,10 @@ function updateDivsWithPivotData(pivotTable) {
         if (div) {
             let divContainer = document.createElement('div');
             divContainer.className = 'summary-results-container flex-start-spacebetween';
-            let p = document.createElement('p');
-            p.innerHTML = 'Total Page Views <br><br> <span class="bolded-result">' + pivotTable[restaurantName] + '</span>';
+            let h3 = document.createElement('h3');
+            h3.innerHTML = 'Total Page Views <br><span><p style="font-weight: 400">Total visits to your restaurants menus</p></span><br> <span class="bolded-result">' + pivotTable[restaurantName] + '</span>';
             div.appendChild(divContainer);
-            divContainer.appendChild(p)
+            divContainer.appendChild(h3)
         }
     }
 }
@@ -171,14 +174,18 @@ function createLineGraphs(restaurantData, dateRange) {
         const divId = restaurantName;
         const divElement = document.getElementById(divId).querySelector('.summary-results-container');
         const chartId = restaurantName + '-views-chart';
-        const chartXLabel = document.createElement('p')
-        chartXLabel.innerHTML = "X Axis"
+        const chartXLabel = document.createElement('h4')
+        chartXLabel.innerHTML = "Users per Day from " + dateRange;
+
+        const chartContainer = document.createElement('div')
+        chartContainer.appendChild(chartXLabel);
         // Create a canvas element for the chart
         const canvas = document.createElement('canvas');
         canvas.id = chartId;
         canvas.className = "views-chart"
-
-        divElement.appendChild(canvas);
+        chartContainer.className = 'chart-container'
+        chartContainer.appendChild(canvas)
+        divElement.appendChild(chartContainer);
         
         // Extract the dates and page views from the data
         const dates = data.map((item) => item.date);
@@ -200,7 +207,7 @@ function createLineGraphs(restaurantData, dateRange) {
                     legend: {
                         display: false
                     },
-                    title: {display: true, text: "Users per Day from "+ dateRange}
+                    
                 },
                 responsive: true,
                 maintainAspectRatio: true,
